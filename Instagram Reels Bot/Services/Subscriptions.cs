@@ -287,7 +287,7 @@ namespace Instagram_Reels_Bot.Services
                                                 //Response with stream:
                                                 using (Stream stream = new MemoryStream(response.stream))
                                                 {
-                                                    FileAttachment attachment = new FileAttachment(stream, "IGMedia.mp4", "An Instagram Video.");
+                                                    FileAttachment attachment = new FileAttachment(stream, "HawkyVideo.mp4", "A Hawkized Insta Video.");
                                                     // get channel:
                                                     IMessageChannel chan = null;
                                                     try
@@ -346,7 +346,7 @@ namespace Instagram_Reels_Bot.Services
                                             {
                                                 using (Stream stream = new MemoryStream(response.stream))
                                                 {
-                                                    FileAttachment attachment = new FileAttachment(stream, "IGMedia.jpg", "An Instagram Image.");
+                                                    FileAttachment attachment = new FileAttachment(stream, "HawkyPic.jpg", "A Hawkized Insta Image.");
 
                                                     // get channel:
                                                     IMessageChannel chan = null;
