@@ -76,7 +76,7 @@ namespace Instagram_Reels_Bot.Modules
 					//Response with stream:
 					using (Stream stream = new MemoryStream(response.stream))
 					{
-						FileAttachment attachment = new FileAttachment(stream, "IGMedia.mp4", "An Instagram Video.", isSpoiler: HasSpoilers);
+						FileAttachment attachment = new FileAttachment(stream, "HawkyVideo.mp4", "A Hawkized Insta Video.", isSpoiler: HasSpoilers);
 
 						await Context.Interaction.FollowupWithFileAsync(attachment, embed: embed.AutoSelector(), components: component.AutoSelector());
 					}
@@ -94,7 +94,7 @@ namespace Instagram_Reels_Bot.Modules
 				{
 					using (Stream stream = new MemoryStream(response.stream))
 					{
-						FileAttachment attachment = new FileAttachment(stream, "IGMedia.jpg", "An Instagram Image.", isSpoiler: HasSpoilers);
+						FileAttachment attachment = new FileAttachment(stream, "HawkyPic.jpg", "A Hawkized Insta Image.", isSpoiler: HasSpoilers);
 						await Context.Interaction.FollowupWithFileAsync(attachment, embed: embed.AutoSelector(), allowedMentions: AllowedMentions.None, components: component.AutoSelector());
 					}
 				}
