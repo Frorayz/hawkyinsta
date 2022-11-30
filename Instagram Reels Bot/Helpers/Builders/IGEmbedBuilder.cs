@@ -106,7 +106,7 @@ namespace Instagram_Reels_Bot.Helpers
             {
 				if (Response.stream != null)
 				{
-					embed.ImageUrl = "attachment://IGMedia.jpg";
+					embed.ImageUrl = "attachment://HawkyPic.jpg";
                 }
                 else
                 {
@@ -172,7 +172,7 @@ namespace Instagram_Reels_Bot.Helpers
 			//Instagram Footer:
 			EmbedFooterBuilder footer = new EmbedFooterBuilder();
 			footer.IconUrl = "https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png";
-			footer.Text = "Instagram";
+			footer.Text = "HawkyInsta";
 
 			//Basic embed params:
 			embed.WithColor(new Color(131, 58, 180));
