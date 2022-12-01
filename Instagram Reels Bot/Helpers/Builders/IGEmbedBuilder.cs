@@ -133,6 +133,9 @@ namespace Instagram_Reels_Bot.Helpers
 			embed.Url = Response.accountUrl.ToString();
 			embed.Description = "**__Biography:__**\n" + Response.bio + "\n\n";
 			//embed.Description += "\nUse the `/subscribe` command to subscribe to accounts.";
+			if (RequesterIsKnown)
+				embed.Description += "**_Requested by:__** " + Requester;
+			return embed.Build();
 
 			//Post count:
 			EmbedFieldBuilder posts = new EmbedFieldBuilder();
@@ -154,11 +157,6 @@ namespace Instagram_Reels_Bot.Helpers
 			following.Value = String.Format("{0:n0}", Response.following);
 			following.IsInline = true;
 			embed.Fields.Add(following);
-			
-			if (RequesterIsKnown)
-				embed.Description += "***Requested by:*** " + Requester;
-
-			return embed.Build();
 		}
 		/// <summary>
         /// The basic structure for embeds
