@@ -131,7 +131,7 @@ namespace Instagram_Reels_Bot.Helpers
 			embed.ThumbnailUrl = Response.iconURL.ToString();
 			embed.Title = (string.IsNullOrEmpty(Response.accountName)) ? Response.username : Response.accountName + "'s Insta Account";
 			embed.Url = Response.accountUrl.ToString();
-			embed.Description = "**Biography:**\n" + Response.bio + "\n\n";
+			embed.Description = "**__Biography:__**\n" + Response.bio + "\n\n";
 			//embed.Description += "\nUse the `/subscribe` command to subscribe to accounts.";
 
 			//Post count:
@@ -156,7 +156,7 @@ namespace Instagram_Reels_Bot.Helpers
 			embed.Fields.Add(following);
 			
 			if (RequesterIsKnown)
-				embed.Description += "Requested by: " + Requester;
+				embed.Description += "***Requested by:*** " + Requester;
 
 			return embed.Build();
 		}
