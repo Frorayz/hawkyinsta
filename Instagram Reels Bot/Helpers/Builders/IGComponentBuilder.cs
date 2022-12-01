@@ -57,7 +57,7 @@ namespace Instagram_Reels_Bot.Helpers
         {
             if (Response.onlyAccountData)
             {
-                return AccountComponent(); // Link in Bio
+                return AccountComponent(); // Click to see Bio linked link!
             }
             return PostComponent(); // See on IG
         }
@@ -108,7 +108,7 @@ namespace Instagram_Reels_Bot.Helpers
             {
                 // create button
                 ButtonBuilder buttonLinkBio = new ButtonBuilder();
-                buttonLinkBio.Label = "Link in Bio";
+                buttonLinkBio.Label = "Click to see Bio linked link!";
                 buttonLinkBio.Style = ButtonStyle.Link;
                 buttonLinkBio.Url = Response.externalURL.ToString();
 
