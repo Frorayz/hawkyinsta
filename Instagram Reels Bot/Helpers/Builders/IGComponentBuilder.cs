@@ -57,9 +57,9 @@ namespace Instagram_Reels_Bot.Helpers
         {
             if (Response.onlyAccountData)
             {
-                return AccountComponent(); // 🔗 Go to Bio Link 🔗
+                return AccountComponent(); // Go to Bio Link
             }
-            return PostComponent(); // 👁 See on IG 👁
+            return PostComponent(); // See on IG
         }
         /// <summary>
         /// The basic structure for Component
@@ -81,7 +81,7 @@ namespace Instagram_Reels_Bot.Helpers
 
             // create button
             ButtonBuilder button = new ButtonBuilder();
-            button.Label = "👁 See on IG 👁";
+            button.Label = "See on IG";
             button.Style = ButtonStyle.Link;
             button.Url = Response.postURL.ToString();
 
@@ -108,7 +108,7 @@ namespace Instagram_Reels_Bot.Helpers
             {
                 // create button
                 ButtonBuilder buttonLinkBio = new ButtonBuilder();
-                buttonLinkBio.Label = "🔗 Go to Bio Link 🔗";
+                buttonLinkBio.Label = "Go to Bio Link";
                 buttonLinkBio.Style = ButtonStyle.Link;
                 buttonLinkBio.Url = Response.externalURL.ToString();
 
