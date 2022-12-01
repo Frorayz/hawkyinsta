@@ -134,7 +134,7 @@ namespace Instagram_Reels_Bot.Helpers
 			embed.Description = "**__Biography:__**\n" + Response.bio + "\n\n";
 			//embed.Description += "\nUse the `/subscribe` command to subscribe to accounts.";
 			if (RequesterIsKnown)
-				embed.Description += "**_Requested by:__** " + Requester;
+				embed.Description += "**__Requested by:__** " + Requester;
 			return embed.Build();
 
 			//Post count:
