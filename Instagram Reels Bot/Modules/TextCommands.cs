@@ -1,4 +1,4 @@
-﻿using Discord;
+using Discord;
 using Discord.Commands;
 using System.Threading.Tasks;
 using System.IO;
@@ -160,7 +160,7 @@ namespace Instagram_Reels_Bot.Modules
                         //Response with stream:
                         using (Stream stream = new MemoryStream(response.stream))
                         {
-                            FileAttachment attachment = new FileAttachment(stream, "IGMedia.mp4", "An Instagram Video.");
+                            FileAttachment attachment = new FileAttachment(stream, "HawkyMedia.mp4", "A Hawkized Media.");
                             await context.Message.Channel.SendFileAsync(attachment, embed: embed.AutoSelector(), components: component.AutoSelector());
                         }
                     }
@@ -177,7 +177,7 @@ namespace Instagram_Reels_Bot.Modules
                     {
                         using (Stream stream = new MemoryStream(response.stream))
                         {
-                            FileAttachment attachment = new FileAttachment(stream, "IGMedia.jpg", "An Instagram Image.");
+                            FileAttachment attachment = new FileAttachment(stream, "HawkyMedia.jpg", "A Hawkized Media.");
                             await context.Channel.SendFileAsync(attachment, embed: embed.AutoSelector(), components: component.AutoSelector());
                         }
                     }
