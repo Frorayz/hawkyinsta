@@ -110,7 +110,7 @@ namespace Instagram_Reels_Bot.Helpers
                 }
                 else
                 {
-					embed.ImageUrl = "attachment://HawkyPic.jpg";
+					embed.ImageUrl = Response.contentURL.ToString();
 				}
 			}
             if (IsSpoiler)
