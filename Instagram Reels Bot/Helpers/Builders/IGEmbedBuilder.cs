@@ -72,7 +72,7 @@ namespace Instagram_Reels_Bot.Helpers
 			// Check to see if requester is known:
 			if (RequesterIsKnown)
 			{
-				embed.Title = "Content from " + Requester + "'s linked post.";
+				embed.Title = Requester + "'s linked post.";
 				embed.Url = Response.postURL.ToString();
             }
             if (Response.postCount > 1)
@@ -106,7 +106,7 @@ namespace Instagram_Reels_Bot.Helpers
             {
 				if (Response.stream != null)
 				{
-					embed.ImageUrl = "attachment://IGMedia.jpg";
+					embed.ImageUrl = "attachment://HawkyMedia.jpg";
                 }
                 else
                 {
@@ -136,7 +136,7 @@ namespace Instagram_Reels_Bot.Helpers
 			if (RequesterIsKnown)
 				embed.Description += "Requested by: " + Requester;
 
-			embed.Description += "\nUse the `/subscribe` command to subscribe to accounts.";
+			//embed.Description += "\nUse the `/subscribe` command to subscribe to accounts.";
 
 			//Post count:
 			EmbedFieldBuilder posts = new EmbedFieldBuilder();
@@ -171,8 +171,8 @@ namespace Instagram_Reels_Bot.Helpers
 
 			//Instagram Footer:
 			EmbedFooterBuilder footer = new EmbedFooterBuilder();
-			footer.IconUrl = "https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png";
-			footer.Text = "Instagram";
+			footer.IconUrl = "https://cdn.discordapp.com/attachments/1043385106812895282/1088186782249664634/Insta.png";
+			footer.Text = "HawkyInsta";
 
 			//Basic embed params:
 			embed.WithColor(new Color(131, 58, 180));
