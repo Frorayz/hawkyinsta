@@ -129,32 +129,32 @@ namespace Instagram_Reels_Bot.Helpers
 
 			//custom embed for profiles:
 			embed.ThumbnailUrl = Response.iconURL.ToString();
-			embed.Title = (string.IsNullOrEmpty(Response.accountName)) ? Response.username : Response.accountName + "'s Instagram Account";
+			embed.Title = (string.IsNullOrEmpty(Response.accountName)) ? Response.username : Response.accountName + "'s Profile";
 			embed.Url = Response.accountUrl.ToString();
 			embed.Description = "**__Bio:__**\n" + Response.bio + "\n\n";
 
 			if (RequesterIsKnown)
-				embed.Description += "Requested by: " + Requester;
+				embed.Description += "**__Requested By:__**\n" + Requester;
 
 			//embed.Description += "\nUse the `/subscribe` command to subscribe to accounts.";
 
 			//Post count:
 			EmbedFieldBuilder posts = new EmbedFieldBuilder();
-			posts.Name = "Posts:";
+			posts.Name = "**__Posts:__**";
 			posts.Value = String.Format("{0:n0}", Response.posts);
 			posts.IsInline = true;
 			embed.Fields.Add(posts);
 
 			//Follower count:
 			EmbedFieldBuilder followers = new EmbedFieldBuilder();
-			followers.Name = "Followers:";
+			followers.Name = "**__Followers:__**";
 			followers.Value = String.Format("{0:n0}", Response.followers);
 			followers.IsInline = true;
 			embed.Fields.Add(followers);
 
 			//Following count
 			EmbedFieldBuilder following = new EmbedFieldBuilder();
-			following.Name = "Following:";
+			following.Name = "**__Following:__**";
 			following.Value = String.Format("{0:n0}", Response.following);
 			following.IsInline = true;
 			embed.Fields.Add(following);
