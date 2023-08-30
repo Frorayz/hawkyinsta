@@ -106,11 +106,11 @@ namespace Instagram_Reels_Bot.Helpers
             {
 				if (Response.stream != null)
 				{
-					embed.ImageUrl = "attachment://HawkyMedia.jpg";
+					embed.ImageUrl = "attachment://HawkyVideo.jpg";
                 }
                 else
                 {
-					embed.ImageUrl = Response.contentURL.ToString();
+					embed.ImageUrl = "attachment://HawkyPic.jpg";
 				}
 			}
             if (IsSpoiler)
