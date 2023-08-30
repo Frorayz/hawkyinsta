@@ -131,7 +131,7 @@ namespace Instagram_Reels_Bot.Helpers
 			embed.ThumbnailUrl = Response.iconURL.ToString();
 			embed.Title = (string.IsNullOrEmpty(Response.accountName)) ? Response.username : Response.accountName + "'s Instagram Account";
 			embed.Url = Response.accountUrl.ToString();
-			embed.Description = "**Biography:**\n" + Response.bio + "\n\n";
+			embed.Description = "**__Bio:__**\n" + Response.bio + "\n\n";
 
 			if (RequesterIsKnown)
 				embed.Description += "Requested by: " + Requester;
