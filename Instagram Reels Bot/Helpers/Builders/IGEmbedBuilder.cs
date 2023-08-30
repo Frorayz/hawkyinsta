@@ -106,7 +106,7 @@ namespace Instagram_Reels_Bot.Helpers
             {
 				if (Response.stream != null)
 				{
-					embed.ImageUrl = "attachment://HawkyVideo.jpg";
+					embed.ImageUrl = "attachment://HawkyMedia.jpg";
                 }
                 else
                 {
