@@ -160,7 +160,7 @@ namespace Instagram_Reels_Bot.Modules
                         //Response with stream:
                         using (Stream stream = new MemoryStream(response.stream))
                         {
-                            FileAttachment attachment = new FileAttachment(stream, "HawkyMedia.mp4", "A Hawkized Media.");
+                            FileAttachment attachment = new FileAttachment(stream, "HawkyMedia.mp4", "A HawkyInsta Video");
                             await context.Message.Channel.SendFileAsync(attachment, embed: embed.AutoSelector(), components: component.AutoSelector());
                         }
                     }
@@ -177,7 +177,7 @@ namespace Instagram_Reels_Bot.Modules
                     {
                         using (Stream stream = new MemoryStream(response.stream))
                         {
-                            FileAttachment attachment = new FileAttachment(stream, "HawkyMedia.jpg", "A Hawkized Media.");
+                            FileAttachment attachment = new FileAttachment(stream, "HawkyMedia.jpg", "A HawkyInsta Picture");
                             await context.Channel.SendFileAsync(attachment, embed: embed.AutoSelector(), components: component.AutoSelector());
                         }
                     }
