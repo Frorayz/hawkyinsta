@@ -171,7 +171,7 @@ namespace Instagram_Reels_Bot.Helpers
 
 			//Instagram Footer:
 			EmbedFooterBuilder footer = new EmbedFooterBuilder();
-			footer.IconUrl = "https://cdn.discordapp.com/attachments/1043385106812895282/1088186782249664634/Insta.png";
+			footer.IconUrl = "https://up.kururin.tech/HtpNLr1O.png";
 			footer.Text = "HawkyInsta";
 
 			//Basic embed params:
