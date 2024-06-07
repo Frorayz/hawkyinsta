@@ -87,7 +87,7 @@ namespace Instagram_Reels_Bot.Helpers
 
                 // load session file if exists
                 if (File.Exists(stateFile)) {
-                    Console.WriteLine("Loading state from file");
+                    Console.WriteLine("Loading State From File...");
                     using FileStream fs = File.OpenRead(stateFile);
                     // Load state data from file:
                     instaApi.LoadStateDataFromStream(fs);
@@ -104,14 +104,14 @@ namespace Instagram_Reels_Bot.Helpers
                 // 2FA
                 if (logInResult.Value == InstaLoginResult.TwoFactorRequired)
                 {
-                    Console.WriteLine("Logging in with 2FA...");
+                    Console.WriteLine("Logging In With 2FA...");
                     //Try to log in:
                     string code = Security.GetTwoFactorAuthCode(account.OTPSecret);
                     Console.WriteLine(code);
                     var twoFAlogInResult = instaApi.TwoFactorLoginAsync(code, 0).GetAwaiter().GetResult();
                     if (!twoFAlogInResult.Succeeded)
                     {
-                        Console.WriteLine("Failed to log in with 2FA.");
+                        Console.WriteLine("Failed To Login With 2FA!");
                         Console.WriteLine(twoFAlogInResult.Info.Message);
 
                         //Set failed login:
@@ -119,11 +119,11 @@ namespace Instagram_Reels_Bot.Helpers
                         user.Blacklist = true;
 
                         //Throw failed login:
-                        throw new Exception("Failed 2FA login. Account: " + user.UserName + " Error: " + twoFAlogInResult.Info.Message);
+                        throw new Exception("Failed 2FA Login! Account: " + user.UserName + " Error: " + twoFAlogInResult.Info.Message);
                     }
                     else
                     {
-                        Console.WriteLine("Logged in with 2FA.");
+                        Console.WriteLine("Logged In With 2FA!");
                     }
                 }
                 else
@@ -225,11 +225,11 @@ namespace Instagram_Reels_Bot.Helpers
                     }
 
                     // Warn about not setting valid times:
-                    Console.WriteLine("Warning: No time set on account " + cred.UserName+". Using the account.");
+                    Console.WriteLine("Warning: No Time Set On Account " + cred.UserName+". Using the account.");
                     return cred;
                 }
 
-                throw new InvalidDataException("No available accounts.");
+                throw new InvalidDataException("No Available Accounts!");
             }
         }
         #endregion Accounts
@@ -324,11 +324,11 @@ namespace Instagram_Reels_Bot.Helpers
             //Ensure link is an Instagram Link:
             if (!(link.DnsSafeHost.ToLower().Equals("www.instagram.com") || link.DnsSafeHost.ToLower().Equals("instagram.com")))
             {
-                return new InstagramProcessorResponse("Not a recognized Instagram link.");
+                return new InstagramProcessorResponse("Not A Recognized Instagram Link!");
             }
             if (!(link.Scheme.ToLower().Equals("https") || link.Scheme.ToLower().Equals("http")))
             {
-                return new InstagramProcessorResponse("Link must be served over http or https.");
+                return new InstagramProcessorResponse("Link Must Be Served From HTTP/HTTPS!");
             }
 
             // Process the link:
@@ -343,7 +343,7 @@ namespace Instagram_Reels_Bot.Helpers
             }
             catch
             {
-                Console.WriteLine("Could not adjust index from url.");
+                Console.WriteLine("Could Not Adjust Index From URL!");
             }
             
             // process account
@@ -359,7 +359,7 @@ namespace Instagram_Reels_Bot.Helpers
             // TODO Highlights:
             else if (isHighlight(link))
             {
-                return new InstagramProcessorResponse("Highlights are not supported yet.");
+                return new InstagramProcessorResponse("Highlights Not Supported!");
             }
             // all others:
             else
@@ -429,7 +429,7 @@ namespace Instagram_Reels_Bot.Helpers
                 }
                 else if (mediaId.Value == null)
                 {
-                    return new InstagramProcessorResponse("No post information returned.");
+                    return new InstagramProcessorResponse("No Post Information Returned!");
                 }
                 else
                 {
@@ -462,7 +462,7 @@ namespace Instagram_Reels_Bot.Helpers
             {
                 if (media.Carousel.Count <= index)
                 {
-                    return new InstagramProcessorResponse("Index out of bounds. There is only " + media.Carousel.Count + " Posts.");
+                    return new InstagramProcessorResponse("Index Out Of Bounds, There's Only " + media.Carousel.Count + " Posts.");
                 }
                 if (media.Carousel[index].Videos.Count > 0)
                 {
@@ -527,7 +527,7 @@ namespace Instagram_Reels_Bot.Helpers
             }
             catch (HttpRequestException e)
             {
-                if (e.Message.Contains("Cannot write more bytes to the buffer than the configured maximum buffer size"))
+                if (e.Message.Contains("Cannot Write More Bytes Than Maximum Limit Allowed!"))
                 {
                     //File too big to upload to discord. Just ignore the error.
                 }
@@ -569,7 +569,7 @@ namespace Instagram_Reels_Bot.Helpers
             }
             else if (user.Value.IsPrivate)
             {
-                return new InstagramProcessorResponse("The account is private.");
+                return new InstagramProcessorResponse("The Account Is Private!");
             }
 
             //Get user data:
@@ -579,11 +579,11 @@ namespace Instagram_Reels_Bot.Helpers
             var stories = await instaApi.StoryProcessor.GetUserStoryAsync(userId);
             if (!stories.Succeeded)
             {
-                return new InstagramProcessorResponse("Failed to load stories for the user.");
+                return new InstagramProcessorResponse("Failed To Load Stories For That User!");
             }
             if (stories.Value.Items.Count == 0)
             {
-                return new InstagramProcessorResponse("No stories exist for that user.");
+                return new InstagramProcessorResponse("No Stories Exist For That User");
             }
             foreach (var story in stories.Value.Items)
             {
@@ -624,7 +624,7 @@ namespace Instagram_Reels_Bot.Helpers
                     }
                     else
                     {
-                        return new InstagramProcessorResponse("This story uses a format that we do not support.");
+                        return new InstagramProcessorResponse("This Story Uses A Format That The Bot Do Not Support!");
                     }
                     //Return downloaded content (if possible):
                     try
@@ -644,7 +644,7 @@ namespace Instagram_Reels_Bot.Helpers
                     }
                     catch (HttpRequestException e)
                     {
-                        if (e.Message.Contains("Cannot write more bytes to the buffer than the configured maximum buffer size"))
+                        if (e.Message.Contains("Cannot Write More Bytes Than Maximum Limit Allowed!"))
                         {
                             //File too big to upload to discord. Just ignore the error.
                         }
@@ -676,7 +676,7 @@ namespace Instagram_Reels_Bot.Helpers
             //get the IG user:
             var userPull = (await instaApi.UserProcessor.GetUserInfoByIdAsync(userID));
             // check for null values:
-            if (!userPull.Succeeded && userPull.Info.Message == "Target user not found")
+            if (!userPull.Succeeded && userPull.Info.Message == "Target User Not Found!")
             {
                 Console.WriteLine("Account no longer exists.");
                 return new InstagramProcessorResponse[1] { new InstagramProcessorResponse("NullAccount") };
@@ -724,7 +724,7 @@ namespace Instagram_Reels_Bot.Helpers
             //Ensure there are posts:
             if (LatestMedia == null || LatestMedia.Count == 0)
             {
-                Console.WriteLine("Cannot see profile. May be private.");
+                Console.WriteLine("Cannot See Profile, Is Privated!");
                 return DateTime.UnixEpoch;
             }
             return LatestMedia[0].TakenAt;
@@ -771,16 +771,16 @@ namespace Instagram_Reels_Bot.Helpers
                     var user = AccountFinder.Accounts.FirstOrDefault(acc => acc.UserName == Account.UserName);
                     user.Blacklist = true;
                     //Throw error:
-                    throw new Exception("Relogin required. Account: "+Account.UserName);
+                    throw new Exception("Relogin Required! Account: "+Account.UserName);
                 case ResponseType.CheckPointRequired:
                     // Not much is known about this error.
                     throw new Exception("Checkpoint Required error from IG.");
                 case ResponseType.MediaNotFound:
-                    return new InstagramProcessorResponse("Could not find that post. Is the account private?");
+                    return new InstagramProcessorResponse("Could Not Find That Post, Account Private!");
                 case ResponseType.DeletedPost:
-                    return new InstagramProcessorResponse("The post was deleted from Instagram.");
+                    return new InstagramProcessorResponse("Post Was Deleted By Instagram!");
                 case ResponseType.NetworkProblem:
-                    return new InstagramProcessorResponse("Could not connect to Instagram.");
+                    return new InstagramProcessorResponse("Error Connecting To Instagram!");
                 case ResponseType.UnExpectedResponse:
                     if (result.Info.Message.Contains("User not found"))
                     {
@@ -792,7 +792,7 @@ namespace Instagram_Reels_Bot.Helpers
                     }
                 default:
                     Console.WriteLine("Error: " + result.Info);
-                    return new InstagramProcessorResponse("Error retrieving the content. The account may be private. Please report this to the admin if the account is public or if this is unexpected. (unknown error)");
+                    return new InstagramProcessorResponse("An Unexpected Error Occured, Ping <@417185533564026882> For Further Help!");
             }
         }
         #endregion Errors
