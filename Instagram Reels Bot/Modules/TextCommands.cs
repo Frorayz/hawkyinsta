@@ -22,7 +22,7 @@ namespace Instagram_Reels_Bot.Modules
 
         private string ExtractInstagramUrl(string input)
         {
-            var urlMatch = Regex.Match(input, @"https?:\/\/(www\.)?instagram\.com\/[a-zA-Z0-9_\/]+");
+            var urlMatch = Regex.Match(input, @"https?:\/\/(?:www\.)?instagram\.com\/[a-zA-Z0-9_\-\/]+");
             return urlMatch.Success ? urlMatch.Value : null;
         }
 
