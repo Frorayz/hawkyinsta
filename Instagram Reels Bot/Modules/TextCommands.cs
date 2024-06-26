@@ -7,7 +7,6 @@ using Microsoft.Extensions.Configuration;
 using System;
 using Instagram_Reels_Bot.Services;
 using System.Reflection.Metadata;
-using System.Text.RegularExpressions;
 
 namespace Instagram_Reels_Bot.Modules
 {
@@ -15,70 +14,92 @@ namespace Instagram_Reels_Bot.Modules
     {
         private readonly IConfiguration _config;
 
+        // Constructor injection is also a valid way to access the dependecies
         public TextCommands(IConfiguration config)
         {
             _config = config;
         }
-
-        private string ExtractInstagramUrl(string input)
-        {
-            var urlMatch = Regex.Match(input, @"https?:\/\/(?:www\.)?instagram\.com\/[a-zA-Z0-9_\-\/]+");
-            return urlMatch.Success ? urlMatch.Value : null;
-        }
-
+        /// <summary>
+        /// Parse reel URL:
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
         [Command("reel", RunMode = RunMode.Async)]
         public async Task ReelParser([Remainder] string args = null)
         {
-            string url = ExtractInstagramUrl(args);
-            if (url != null)
-                await Responder(url, Context);
+            //form url:
+            string url = "https://www.instagram.com/reel/" + args.Replace(" ", "/");
+            await Responder(url, Context);
         }
-
+        /// <summary>
+        /// Parse an instagram post:
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
         [Command("p", RunMode = RunMode.Async)]
         public async Task PostParser([Remainder] string args = null)
         {
-            string url = ExtractInstagramUrl(args);
-            if (url != null)
-                await Responder(url, Context);
+            //form url:
+            string url = "https://www.instagram.com/p/" + args.Replace(" ", "/");
+            await Responder(url, Context);
         }
-
+        /// <summary>
+        /// Parse an instagram TV link:
+        /// https://www.instagram.com/tv/
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
         [Command("tv", RunMode = RunMode.Async)]
         public async Task TVParser([Remainder] string args = null)
         {
-            string url = ExtractInstagramUrl(args);
-            if (url != null)
-                await Responder(url, Context);
+            //form url:
+            string url = "https://www.instagram.com/tv/" + args.Replace(" ", "/");
+            await Responder(url, Context);
         }
-
+        /// <summary>
+        /// Parse Story Link
+        /// Ex: https://instagram.com/stories/wevolverapp/2718330735469161935
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
         [Command("stories", RunMode = RunMode.Async)]
         public async Task StoryParser([Remainder] string args = null)
         {
-            string url = ExtractInstagramUrl(args);
-            if (url != null)
-                await Responder(url, Context);
+            //form url:
+            string url = "https://www.instagram.com/stories/" + args.Replace(" ", "/");
+            await Responder(url, Context);
         }
-
+        /// <summary>
+        /// Parses a link to a users profile page.
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
         [Command("profile", RunMode = RunMode.Async)]
         public async Task ProfileParser([Remainder] string args = null)
         {
+            // Check whitelist:
             if (!Whitelist.IsServerOnList(Context.Guild.Id))
+            {
+                // Ignore if not on list:
                 return;
-
+            }
             using (Context.Channel.EnterTypingState())
             {
+                // Get IG account:
                 InstagramProcessor instagram = new InstagramProcessor(InstagramProcessor.AccountFinder.GetIGAccount());
-                string url = ExtractInstagramUrl(args);
-                if (url == null)
-                    return;
 
+                string url = "https://instagram.com/" + args.Replace(" ", "/");
+
+                // Process profile:
                 InstagramProcessorResponse response = await instagram.PostRouter(url, (int)Context.Guild.PremiumTier, 1);
 
+                // Check for failed post:
                 if (!response.success)
                 {
                     await Context.Message.ReplyAsync(response.error);
                     return;
                 }
-
+                // If not a profile for some reason, treat otherwise:
                 if (!response.onlyAccountData)
                 {
                     await Responder(url, Context);
@@ -89,33 +110,46 @@ namespace Instagram_Reels_Bot.Modules
                 IGComponentBuilder component = new IGComponentBuilder(response, Context.User.Id, _config);
 
                 await Context.Message.ReplyAsync(embed: embed.AutoSelector(), allowedMentions: AllowedMentions.None, components: component.AutoSelector());
+
+                //Attempt to remove any automatic embeds:
                 DiscordTools.SuppressEmbeds(Context);
             }
         }
-
+        /// <summary>
+        /// Centralized method to handle all Instagram links and respond to text based messages (No slash commands).
+        /// </summary>
+        /// <param name="url">The Instagram URL of the content</param>
+        /// <param name="context">The discord context of the message</param>
+        /// <returns></returns>
         private static async Task Responder(string url, ICommandContext context)
         {
+            // Check whitelist:
             if (!Whitelist.IsServerOnList(context.Guild.Id))
             {
+                // Ignore if not on list:
                 return;
             }
             using (context.Channel.EnterTypingState())
             {
+                // Get IG account:
                 InstagramProcessor instagram = new InstagramProcessor(InstagramProcessor.AccountFinder.GetIGAccount());
 
+                //Process Post:
                 InstagramProcessorResponse response = await instagram.PostRouter(url, (int)context.Guild.PremiumTier, 1);
 
+                //Check for failed post:
                 if (!response.success)
                 {
                     await context.Message.ReplyAsync(response.error);
                     return;
                 }
-
+                // Check config:
                 var _builder = new ConfigurationBuilder()
                     .SetBasePath(AppContext.BaseDirectory)
                     .AddJsonFile(path: "config.json");
                 var _config = _builder.Build();
 
+                // Embed builder:
                 IGEmbedBuilder embed = (!string.IsNullOrEmpty(_config["DisableTitle"]) && _config["DisableTitle"].ToLower() == "true") ? (new IGEmbedBuilder(response)) : (new IGEmbedBuilder(response, context.User.Username));
                 IGComponentBuilder component = new IGComponentBuilder(response, context.User.Id, _config);
 
@@ -123,6 +157,7 @@ namespace Instagram_Reels_Bot.Modules
                 {
                     if (response.stream != null)
                     {
+                        //Response with stream:
                         using (Stream stream = new MemoryStream(response.stream))
                         {
                             FileAttachment attachment = new FileAttachment(stream, "HawkyMedia.mp4", "A HawkyInsta Video");
@@ -131,8 +166,10 @@ namespace Instagram_Reels_Bot.Modules
                     }
                     else
                     {
+                        //Response without stream:
                         await context.Message.ReplyAsync(response.contentURL.ToString(), embed: embed.AutoSelector(), allowedMentions: AllowedMentions.None, components: component.AutoSelector());
                     }
+
                 }
                 else
                 {
@@ -150,6 +187,7 @@ namespace Instagram_Reels_Bot.Modules
                     }
                 }
 
+                //Try to remove the embeds on the command post:
                 DiscordTools.SuppressEmbeds(context);
             }
         }
