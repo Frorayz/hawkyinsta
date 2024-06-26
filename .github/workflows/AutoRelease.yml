@@ -61,6 +61,6 @@ jobs:
       - name: Publish
         uses: softprops/action-gh-release@v1
         with:
-          files: "IGReelsBot*"
+          files: "HawkyInsta*"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
