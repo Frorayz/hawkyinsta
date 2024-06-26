@@ -131,11 +131,13 @@ namespace Instagram_Reels_Bot.Modules
             }
             using (context.Channel.EnterTypingState())
             {
+                var messageContent = context.Message.Content;
+                var cleanContent = messageContent.Replace(context.Message.MentionedUsers.FirstOrDefault()?.Mention, "").Trim();
+
                 // Get IG account:
                 InstagramProcessor instagram = new InstagramProcessor(InstagramProcessor.AccountFinder.GetIGAccount());
 
-                //Process Post:
-                InstagramProcessorResponse response = await instagram.PostRouter(url, (int)context.Guild.PremiumTier, 1);
+                var extractedUrl = ExtractInstagramUrl(cleanContent);
 
                 //Check for failed post:
                 if (!response.success)
@@ -143,11 +145,6 @@ namespace Instagram_Reels_Bot.Modules
                     await context.Message.ReplyAsync(response.error);
                     return;
                 }
-                // Check config:
-                var _builder = new ConfigurationBuilder()
-                    .SetBasePath(AppContext.BaseDirectory)
-                    .AddJsonFile(path: "config.json");
-                var _config = _builder.Build();
 
                 // Embed builder:
                 IGEmbedBuilder embed = (!string.IsNullOrEmpty(_config["DisableTitle"]) && _config["DisableTitle"].ToLower() == "true") ? (new IGEmbedBuilder(response)) : (new IGEmbedBuilder(response, context.User.Username));
@@ -190,6 +187,14 @@ namespace Instagram_Reels_Bot.Modules
                 //Try to remove the embeds on the command post:
                 DiscordTools.SuppressEmbeds(context);
             }
+        }
+
+        private static string ExtractInstagramUrl(string content)
+        {
+            // Simple regex to match Instagram URLs
+            var regex = new System.Text.RegularExpressions.Regex(@"https?://(www\.)?instagram\.com/[^\s]+");
+            var match = regex.Match(content);
+            return match.Value;
         }
     }
 }
