@@ -134,21 +134,21 @@ namespace Instagram_Reels_Bot.Modules
                 var messageContent = context.Message.Content;
                 var cleanContent = messageContent.Replace(context.Message.MentionedUsers.FirstOrDefault()?.Mention, "").Trim();
 
+                // Extract the URL from the cleaned content
+                var extractedUrl = ExtractInstagramUrl(cleanContent);
+
                 // Get IG account:
                 InstagramProcessor instagram = new InstagramProcessor(InstagramProcessor.AccountFinder.GetIGAccount());
 
-                var extractedUrl = ExtractInstagramUrl(cleanContent);
+                // Process Post:
+                InstagramProcessorResponse response = await instagram.PostRouter(extractedUrl, (int)context.Guild.PremiumTier, 1);
 
-                //Check for failed post:
+                // Check for failed post:
                 if (!response.success)
                 {
                     await context.Message.ReplyAsync(response.error);
                     return;
                 }
-
-                // Embed builder:
-                IGEmbedBuilder embed = (!string.IsNullOrEmpty(_config["DisableTitle"]) && _config["DisableTitle"].ToLower() == "true") ? (new IGEmbedBuilder(response)) : (new IGEmbedBuilder(response, context.User.Username));
-                IGComponentBuilder component = new IGComponentBuilder(response, context.User.Id, _config);
 
                 if (response.isVideo)
                 {
@@ -183,6 +183,13 @@ namespace Instagram_Reels_Bot.Modules
                         await context.Message.ReplyAsync(embed: embed.AutoSelector(), allowedMentions: AllowedMentions.None, components: component.AutoSelector());
                     }
                 }
+
+                // Check config:
+                var _builder = new ConfigurationBuilder()
+                    .SetBasePath(AppContext.BaseDirectory)
+                    .AddJsonFile(path: "config.json");
+                var _config = _builder.Build();
+
 
                 //Try to remove the embeds on the command post:
                 DiscordTools.SuppressEmbeds(context);
